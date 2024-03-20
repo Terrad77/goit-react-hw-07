@@ -5,10 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 //хук унікальних ідентифікаторів полів useId
 import { useId } from 'react';
-// npm install nanoid // бібл генерації ідентифікаторів
-import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice'; // Імпорт екшена додавання контакту
+import { addContact } from '../../redux/contactsOps';
 
 // Об'являємо схему валідації об'єкта
 const ContactFormSchema = Yup.object().shape({
@@ -36,7 +34,6 @@ export default function ContactForm() {
       }}
       onSubmit={(values, { resetForm }) => {
         const newContact = {
-          id: nanoid(5),
           name: values.name,
           number: values.number,
         };

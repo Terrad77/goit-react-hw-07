@@ -3,7 +3,7 @@ import css from './Contact.module.css';
 import { IoPersonSharp } from 'react-icons/io5';
 import { FaPhone } from 'react-icons/fa6';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactsSlice'; // Імпорт екшена видалення контакту
+import { deleteContact } from '../../redux/contactsOps';
 
 export default function Contact({ id, name, number }) {
   const dispatch = useDispatch(); // Отримання функції dispatch з Redux store
