@@ -1,0 +1,15 @@
+.wraper {
+  display: flex;
+  flex-direction: column;
+}
+.label {
+  color: blue;
+}
+.field {
+  display: flex;
+  width: 360px;
+  border-radius: 4px;
+  background-color: transparent;
+  color: inherit;
+  border: 2px solid;
+}

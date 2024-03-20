@@ -1,0 +1,36 @@
+.contactCard {
+  display: flex;
+  flex-direction: row;
+  border: 2px solid;
+  padding: 0px 8px;
+  border-radius: 6px;
+  justify-content: space-between;
+  align-items: center;
+  width: 360px;
+}
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn {
+  /* margin-left: 80px; */
+  background-color: lightgrey;
+  color: black;
+  border: 2px solid lightslategray;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn:hover,
+.btn:focus {
+  background-color: #9999;
+  border: 2px solid gray;
+  color: red;
+}
