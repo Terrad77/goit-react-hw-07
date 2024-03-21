@@ -3,27 +3,32 @@ import { useEffect } from 'react';
 import ContactForm from '../ContactForm/ContactForm';
 import ContactList from '../ContactList/ContactList';
 import SearchBox from '../SearchBox/SearchBox';
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from '../../redux/contactsOps.js';
-import Loader from '../Loader/Loader';
 import toast, { Toaster } from 'react-hot-toast';
+import Error from '../Error/Error.jsx';
+import Loader from '../Loader/Loader.jsx';
 
 export default function App() {
   // Отримання функції dispatch з Redux store
   const dispatch = useDispatch();
+  const loading = useSelector(state => state.contacts.loading);
+  const error = useSelector(state => state.contacts.error);
 
   useEffect(() => {
-    // запит (dispatch action fetchContacts() ) на сервер для отримання контактів.
+    // запит (dispatch action) на сервер для отримання контактів.
     dispatch(fetchContacts())
-      .then(() => {
-        toast.success('Contacts fetched successfully ', {
+      // .unwrap()
+      .then(value => {
+        console.log(value);
+        toast.success('fetchContacts fulfilled', {
           icon: '👍',
           style: { gap: '5px' },
         });
       })
       .catch(error => {
-        toast.error('Failed to fetch contacts: '(error.message));
+        // console.log(error);
+        toast.error(`fetchContacts rejected: ${error.message}`);
       });
   }, [dispatch]);
 
@@ -33,7 +38,8 @@ export default function App() {
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
-      <Loader />
+      {error && <Error>Error message!</Error>}
+      {loading && <Loader>Loading message</Loader>}
       <ContactList />
     </div>
   );

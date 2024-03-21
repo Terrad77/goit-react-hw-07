@@ -1,10 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 
-axios.defaults.baseURL = 'https://65fae8c23909a9a65b1bf52b.mockapi.io';
+axios.defaults.baseURL = 'https://65fae8c23909a9a65b1bf52b.mockapi.i';
 
-// Операція для отримання масиву контактів
+// отримання масиву контактів
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
   async (_, thunkAPI) => {
@@ -12,12 +11,13 @@ export const fetchContacts = createAsyncThunk(
       const response = await axios.get('/contacts');
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      //обробка помилок та надання резервного значення
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-// Операція для додавання нового контакту
+//  додавання нового контакту
 export const addContact = createAsyncThunk(
   'contacts/addContact',
   async (newContact, thunkAPI) => {
@@ -25,12 +25,12 @@ export const addContact = createAsyncThunk(
       const response = await axios.post('/contacts', newContact);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-// Операція для видалення контакту по ID
+// видалення контакту по ID
 export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, thunkAPI) => {
@@ -38,7 +38,19 @@ export const deleteContact = createAsyncThunk(
       await axios.delete(`/contacts/${contactId}`);
       return contactId; // Повертаємо ID видаленого контакту
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+// оновлення контакту по ID
+export const updateContact = createAsyncThunk(
+  'contacts/updateContact',
+  async (update, thunkAPI) => {
+    try {
+      const response = await axios.put(`/contacts/${update.id}`, update);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

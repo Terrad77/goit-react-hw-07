@@ -1,5 +1,10 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { addContact, deleteContact, fetchContacts } from './contactsOps';
+import {
+  addContact,
+  deleteContact,
+  fetchContacts,
+  updateContact,
+} from './contactsOps';
 import { selectNameFilter } from './filtersSlice';
 
 const contactsSlice = createSlice({
@@ -10,11 +15,11 @@ const contactsSlice = createSlice({
     error: null, //оновлення редюсера контактів для обробки помилок
   },
   //обробка  екшенів (fulfilled, rejected, pending) та зміна даних у стані
-  extraReducers: builder => {
+  extraReducers: builder =>
     builder
       // Обробка результатів операції fetchContacts
       .addCase(fetchContacts.pending, state => {
-        state.error = null;
+        state.error = false;
         state.loading = true;
       })
       .addCase(fetchContacts.fulfilled, (state, action) => {
@@ -23,40 +28,57 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchContacts.rejected, (state, action) => {
         state.loading = false;
+        // state.error = true;
         state.error = action.payload;
       })
       // Обробка результатів операції addContact
       .addCase(addContact.pending, state => {
+        state.error = false;
         state.loading = true;
-        state.error = null;
       })
       .addCase(addContact.fulfilled, (state, action) => {
         state.loading = false;
         state.items.push(action.payload);
       })
-      .addCase(addContact.rejected, (state, action) => {
+      .addCase(addContact.rejected, state => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = true;
       })
       // Обробка результатів операції deleteContact
       .addCase(deleteContact.pending, state => {
+        state.error = false;
         state.loading = true;
-        state.error = null;
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.loading = false;
         state.items = state.items.filter(
           contact => contact.id !== action.payload
+          // (item) => item.id !== action.payload.id
         );
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(deleteContact.rejected, state => {
         state.loading = false;
-        state.error = action.payload;
-      });
-  },
+        state.error = true;
+      })
+      // Обробка результатів операції updateContact
+      .addCase(updateContact.pending, state => {
+        state.error = false;
+        state.loading = true;
+      })
+      .addCase(updateContact.fulfilled, (state, action) => {
+        const taskIndex = state.items.findIndex(
+          item => item.id === action.payload.id
+        );
+        state.items[taskIndex] = action.payload;
+      })
+      .addCase(updateContact.rejected, state => {
+        state.loading = false;
+        state.error = true;
+      }),
 });
 
 export const selectContacts = state => state.contacts.items; // функція-селектор для useSelector, повертає список контактів з властивості items.
+
 // Використовуємо createSelector для мемоізації
 export const selectVisibleContacts = createSelector(
   // Перший аргумент - селектор для вибору усіх контактів, Другий аргумент - селектор для вибору фільтра
@@ -68,7 +90,4 @@ export const selectVisibleContacts = createSelector(
   }
 );
 
-// експорт редюсер, екшени і селектори.
-
-// export const { addContact, deleteContact } = contactsSlice.actions;
 export default contactsSlice.reducer;
