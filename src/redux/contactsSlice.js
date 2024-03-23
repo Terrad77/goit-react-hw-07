@@ -12,7 +12,7 @@ const contactsSlice = createSlice({
   initialState: {
     items: [],
     loading: false, //оновлення редюсера контактів для обробки завантаження
-    error: null, //оновлення редюсера контактів для обробки помилок
+    error: false, //оновлення редюсера контактів для обробки помилок
   },
   //обробка  екшенів (fulfilled, rejected, pending) та зміна даних у стані
   extraReducers: builder =>
@@ -81,9 +81,11 @@ export const selectContacts = state => state.contacts.items; // функція-�
 
 // Використовуємо createSelector для мемоізації
 export const selectVisibleContacts = createSelector(
-  // Перший аргумент - селектор для вибору усіх контактів, Другий аргумент - селектор для вибору фільтра
+  // масив залежностей Перший аргумент - селектор для вибору усіх контактів, Другий аргумент - селектор для вибору фільтра
   [selectContacts, selectNameFilter],
+
   (contacts, filter) => {
+    // console.log(selectVisibleContacts);
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );

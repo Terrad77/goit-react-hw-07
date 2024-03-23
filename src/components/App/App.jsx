@@ -17,19 +17,7 @@ export default function App() {
 
   useEffect(() => {
     // запит (dispatch action) на сервер для отримання контактів.
-    dispatch(fetchContacts())
-      // .unwrap()
-      .then(value => {
-        console.log(value);
-        toast.success('fetchContacts fulfilled', {
-          icon: '👍',
-          style: { gap: '5px' },
-        });
-      })
-      .catch(error => {
-        // console.log(error);
-        toast.error(`fetchContacts rejected: ${error.message}`);
-      });
+    dispatch(fetchContacts());
   }, [dispatch]);
 
   return (
@@ -38,7 +26,7 @@ export default function App() {
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
-      {error && <Error>Error message!</Error>}
+      {error && <Error errorMessage={`${error}`}> Error message: </Error>}
       {loading && <Loader>Loading message</Loader>}
       <ContactList />
     </div>
