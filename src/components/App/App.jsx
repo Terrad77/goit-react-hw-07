@@ -5,7 +5,7 @@ import ContactList from '../ContactList/ContactList';
 import SearchBox from '../SearchBox/SearchBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from '../../redux/contactsOps.js';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import Error from '../Error/Error.jsx';
 import Loader from '../Loader/Loader.jsx';
 
