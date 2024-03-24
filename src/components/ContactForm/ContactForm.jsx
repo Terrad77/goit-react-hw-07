@@ -41,8 +41,6 @@ export default function ContactForm() {
         resetForm(); //скидання форми
       }}
       validationSchema={ContactFormSchema} // схема валидации
-      // validationOnBlur={false} // нет валидации при выходе из поля
-      // validateOnChange={false} // нет валидации при каждом изменении значений
     >
       <Form className={css.form}>
         <label htmlFor={nameFieldId}>Name</label>
